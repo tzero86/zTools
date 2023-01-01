@@ -1,4 +1,4 @@
 # zTools - Tex-based UI Tools Dashboard
-![](https://i.imgur.com/b8DgyS2.png)
+![](https://i.imgur.com/9UBcCOY.png)
 
 by @tzero86
