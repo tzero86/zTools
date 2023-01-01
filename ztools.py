@@ -1,13 +1,13 @@
 from textual.app import App, ComposeResult, RenderResult
 from textual.containers import Container
 from textual.reactive import reactive
-from textual.widgets import Button, Header, Footer, Static
+from textual.widgets import Button, Header, Footer, Static, Input
 from textual.widget import Widget
 import socket
 import datetime
 import getpass
 import os
-
+from mods.Zscanner import ZScan
 
 class Banner(Widget):
 
@@ -87,6 +87,14 @@ class Tools(Widget):
         """
         return self.available_tools()
 
+
+
+# The SubScan class is a widget that has a compose method that returns a ComposeResult. The
+# ComposeResult is a generator that yields an Input and a Button
+class SubScan(Widget):
+    def compose(self) -> ComposeResult:
+        yield Input(placeholder="Target_Domain: ", id='target_subdomain')
+        yield Button('Scan', id='start_scan', variant='success')
 
 class Ztools(App):
     # The CSS_PATH is the path to the CSS file that is being used to style the app. The BINDINGS is a

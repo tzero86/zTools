@@ -29,7 +29,16 @@ Tools {
 }
 
 Button {
-    width: 12;
+
+}
+
+SubScan {
+    dock: bottom;
+    content-align: left bottom;
+}
+
+subScan Input {
+    width: 5;
 }
 
 #start {
