@@ -19,18 +19,17 @@ class Banner(Widget):
             username = getpass.getuser()
         except:
             username = os.getlogin()
-        return reactive(username)
+        return username
 
     def get_ip(self):
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.connect(("8.8.8.8", 80))
         ip = s.getsockname()[0]
         s.close()
-        return reactive(ip)
+        return ip
 
     def get_time(self):
         current_time = datetime.datetime.now()
-        time_string = reactive("")
         time_string = current_time.strftime('%Y-%m-%d %H:%M:%S')
         return time_string
 
