@@ -1,11 +1,9 @@
-from time import monotonic
 from textual.app import App, ComposeResult, RenderResult
 from textual.containers import Container
 from textual.reactive import reactive
 from textual.widgets import Button, Header, Footer, Static
 from textual.widget import Widget
 import socket
-import time
 import datetime
 import getpass
 import os
