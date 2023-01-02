@@ -1,6 +1,6 @@
 import openai
 
-API_key = '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'
+API_key = ''
 
 class Bryce:
     def __init__(self, api_key: API_key):
