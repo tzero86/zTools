@@ -8,6 +8,7 @@ import socket
 import datetime
 import getpass
 import os
+from libs.Keyring import Keys
 from mods.Zscanner import ZScan
 from mods.Bryce import Bryce
 
@@ -91,22 +92,25 @@ class Tools(Widget):
 
 
 class Wiki(Widget):
+    mr_bryce = Bryce()
     
-    def askGPT(self, question):
-        mr_bryce = Bryce()
-        return mr_bryce.ask(question)
+    def askGPT(self, question):    
+        return self.mr_bryce.ask(question)
         
-    
     def compose(self) -> ComposeResult:
         yield Input(id='question', placeholder='What do you want to know?')
-        yield TextLog(highlight=True, markup=True)
+        yield TextLog(highlight=True, markup=True, wrap=True)
     
     def action_set_background(self, color: str) -> None:
         self.screen.styles.background = color
 
     def on_key(self, event: events.Key) -> None:
-        if event.key == "ENTER":
-            self.askGPT(event)
+        if event.key == "enter":
+            ask = self.query_one(Input).value
+            response = self.mr_bryce.ask(ask)
+            self.query_one(TextLog).clear()
+            self.query_one(TextLog).write(response)
+            self.query_one(Input).value = ""
 
 
 # The SubScan class is a widget that has a compose method that returns a ComposeResult. The
@@ -130,7 +134,8 @@ class Ztools(App):
         # we create the main areas of the app
         yield Header()
         yield Footer()
-        yield Container(Banner(), Tools(), Wiki())
+        # yield Container(Banner(), Tools(), Wiki())
+        yield Container(Banner(), Wiki())
 
     def action_toggle_dark(self) -> None:
         """
