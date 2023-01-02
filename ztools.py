@@ -1,13 +1,15 @@
 from textual.app import App, ComposeResult, RenderResult
 from textual.containers import Container
 from textual.reactive import reactive
-from textual.widgets import Button, Header, Footer, Static, Input
+from textual.widgets import Button, Header, Footer, Static, Input, TextLog
 from textual.widget import Widget
+from textual import events
 import socket
 import datetime
 import getpass
 import os
 from mods.Zscanner import ZScan
+from mods.Bryce import Bryce
 
 class Banner(Widget):
 
@@ -88,12 +90,30 @@ class Tools(Widget):
         return self.available_tools()
 
 
+class Wiki(Widget):
+    
+    def askGPT(self, question):
+        mr_bryce = Bryce()
+        return mr_bryce.ask(question)
+        
+    
+    def compose(self) -> ComposeResult:
+        yield Input(id='question', placeholder='What do you want to know?')
+        yield TextLog(highlight=True, markup=True)
+    
+    def action_set_background(self, color: str) -> None:
+        self.screen.styles.background = color
+
+    def on_key(self, event: events.Key) -> None:
+        if event.key == "ENTER":
+            self.askGPT(event)
+
 
 # The SubScan class is a widget that has a compose method that returns a ComposeResult. The
 # ComposeResult is a generator that yields an Input and a Button
 class SubScan(Widget):
     def compose(self) -> ComposeResult:
-        yield Input(placeholder="Target_Domain: ", id='target_subdomain')
+        yield Input(placeholder="Target_Domain", id='target_subdomain')
         yield Button('Scan', id='start_scan', variant='success')
 
 class Ztools(App):
@@ -110,7 +130,7 @@ class Ztools(App):
         # we create the main areas of the app
         yield Header()
         yield Footer()
-        yield Container(Banner(), Tools())
+        yield Container(Banner(), Tools(), Wiki())
 
     def action_toggle_dark(self) -> None:
         """
