@@ -1,28 +1,35 @@
 import openai
-
-API_key = ''
+from libs import Keyring
 
 class Bryce:
-    def __init__(self, api_key: API_key):
-        self.api_key = api_key
-        openai.api_key = api_key
+    def __init__(self):
+        self.api_key = Keyring.Keys.OPEN_AI_KEY
+        openai.api_key = Keyring.Keys.OPEN_AI_KEY
         
     def ask(self, question):
         model_engine = "text-davinci-003"
         prompt = (f"{question}\n")
 
-        completions = openai.Completion.create(
-            engine=model_engine,
-            prompt=prompt,
-            max_tokens=1024,
-            n=1,
-            stop=None,
-            temperature=0.5,
-        )
+        try:
+            completions = openai.Completion.create(
+                engine=model_engine,
+                prompt=prompt,
+                max_tokens=1024,
+                n=1,
+                stop=None,
+                temperature=0.5,
+            )
 
-        message = completions.choices[0].text
-        return message
+            if isinstance(completions, str):
+                # Return the error message as the response
+                return completions
+            else:
+                # Access the `choices` attribute as before
+                message = completions.choices[0].text
+                return message
+        except Exception as e:
+            # Return the error message as the response
+            return str(e)
 
-askBryce = Bryce(API_key)
-response = askBryce.ask("Create a Python Script that uses Text User Interface using the following pip library 'textual[dev]'")
-print(response)
+    def test(self):
+        return self.ask('A Dog class in python')

@@ -13,6 +13,15 @@ TimeDisplay {
     height: 3;
 }
 
+Wiki {
+    padding: 2;
+}
+
+TextLog {
+    overflow: scroll;
+    max-height: 15;
+}
+
 Banner {
     content-align: center top;
     text-opacity: 60%;

@@ -99,18 +99,22 @@ class Wiki(Widget):
         
     def compose(self) -> ComposeResult:
         yield Input(id='question', placeholder='What do you want to know?')
-        yield TextLog(highlight=True, markup=True, wrap=True)
+        yield TextLog(highlight=True, markup=True, wrap=True, id="Answer")
+        
     
     def action_set_background(self, color: str) -> None:
         self.screen.styles.background = color
 
     def on_key(self, event: events.Key) -> None:
+        self.query_one(TextLog).clear()
         if event.key == "enter":
+            self.query_one(TextLog).refresh
             ask = self.query_one(Input).value
             response = self.mr_bryce.ask(ask)
             self.query_one(TextLog).clear()
             self.query_one(TextLog).write(response)
             self.query_one(Input).value = ""
+            self.refresh
 
 
 # The SubScan class is a widget that has a compose method that returns a ComposeResult. The
